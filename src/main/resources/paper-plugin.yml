@@ -1,0 +1,4 @@
+name: BackLoc
+version: '${version}'
+main: me.bryang.backloc.BackLoc
+api-version: '1.20'
