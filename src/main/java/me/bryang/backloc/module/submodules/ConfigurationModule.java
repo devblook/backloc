@@ -1,4 +1,4 @@
-package me.bryang.backloc.module;
+package me.bryang.backloc.module.submodules;
 
 import me.bryang.backloc.configuration.ConfigurationContainer;
 import me.bryang.backloc.configuration.type.ConfigSection;

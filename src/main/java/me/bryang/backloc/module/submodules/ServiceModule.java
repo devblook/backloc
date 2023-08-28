@@ -1,4 +1,4 @@
-package me.bryang.backloc.module;
+package me.bryang.backloc.module.submodules;
 
 import me.bryang.backloc.service.ListenerService;
 import me.bryang.backloc.service.Service;
@@ -10,7 +10,6 @@ public class ServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
         multibind(Service.class)
                 .asSet()
                 .to(StorageService.class)

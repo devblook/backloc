@@ -1,76 +1,89 @@
 package me.bryang.backloc.storage;
 
 import com.google.gson.Gson;
+import me.bryang.backloc.storage.adapter.LocationTypeAdapter;
 import me.bryang.backloc.storage.user.User;
-import me.bryang.backloc.storage.user.UserRepository;
+import org.bukkit.Location;
+import team.unnamed.inject.InjectAll;
+import team.unnamed.inject.InjectIgnore;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
+import java.util.logging.Logger;
 
+@InjectAll
 @Singleton
-public class JsonStorage {
+public class GsonFileStorage {
 
-    @Inject
-    private UserRepository userRepository;
+    private Repository<User> userRepository;
 
-    @Inject @Named("plugin-path")
+    @Named("plugin-path")
     private Path path;
 
+    private Logger logger;
+
+    @InjectIgnore
     private Path usersFolder;
 
+    @InjectIgnore
     private Gson localGson;
 
     public void init(){
 
-        localGson = new Gson();
+        localGson = new Gson()
+                .newBuilder()
+                .registerTypeAdapter(Location.class, new LocationTypeAdapter())
+                .create();
+
         usersFolder = path.resolve("users");
 
+        logger.info("Loaded storage system.");
+    }
+
+    public boolean exists(String id){
+        return Files.exists(usersFolder.resolve(id + ".json"));
     }
 
     public void deserializeAndPut(String id){
 
-        Path userPath = usersFolder.resolve(id);
-
+        Path userPath = usersFolder.resolve(id + ".json");
         String userFileLines;
+
         try {
             userFileLines = Files.readString(userPath);
-        }catch (Exception exception){
-            exception.fillInStackTrace();
-            return;
+        } catch (IOException exception) {
+            throw new UncheckedIOException(exception);
         }
 
         User user = localGson.fromJson(userFileLines, User.class);
-        
-        userRepository.
+        userRepository.create(user);
     }
 
     public void serializeAndSave(User user){
 
-        String serializedUserPath = localGson.toJson(user);
-
-        Path userPath = usersFolder.resolve(user.uniqueId());
-
-        if (!Files.exists(userPath)) {
-
-            try {
-                Files.createFile(userPath);
-            } catch (Exception exception) {
-                exception.fillInStackTrace();
-            }
-        }
+        String serializedUserPath = localGson.toJson(user, User.class);
+        Path userPath = usersFolder.resolve(user.uniqueId() + ".json");
 
         try {
-            Files.writeString(usersFolder.resolve(user.uniqueId()), serializedUserPath);
-        }catch (Exception exception){
-            exception.fillInStackTrace();
-        }
+            if (!Files.exists(usersFolder)) {
+                Files.createDirectory(usersFolder);
+            }
 
+            Files.writeString(userPath, serializedUserPath);
+        }catch (IOException exception){
+            throw new UncheckedIOException(exception);
+        }
     }
 
     public void stop(){
+
+        Collection<User> usersValues = userRepository.findAll();
+        usersValues.forEach(this::serializeAndSave);
 
     }
 }

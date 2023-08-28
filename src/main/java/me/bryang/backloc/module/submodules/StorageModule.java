@@ -1,4 +1,4 @@
-package me.bryang.backloc.module;
+package me.bryang.backloc.module.submodules;
 
 import me.bryang.backloc.storage.Repository;
 import me.bryang.backloc.storage.user.User;
@@ -10,7 +10,6 @@ public class StorageModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
         bind(new TypeReference<Repository<User>>(){})
                 .toInstance(new UserRepository());
     }

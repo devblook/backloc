@@ -1,6 +1,7 @@
 package me.bryang.backloc.module;
 
 import me.bryang.backloc.BackLoc;
+import me.bryang.backloc.module.submodules.*;
 import team.unnamed.inject.AbstractModule;
 import team.unnamed.inject.Provides;
 
@@ -8,11 +9,11 @@ import javax.inject.Singleton;
 import java.nio.file.Path;
 import java.util.logging.Logger;
 
-public class PluginModule extends AbstractModule {
+public class MainModule extends AbstractModule {
 
     private final BackLoc plugin;
 
-    public PluginModule(BackLoc plugin){
+    public MainModule(BackLoc plugin){
         this.plugin = plugin;
     }
 

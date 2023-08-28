@@ -1,4 +1,4 @@
-package me.bryang.backloc.module;
+package me.bryang.backloc.module.submodules;
 
 import me.bryang.backloc.command.BackCommand;
 import me.bryang.backloc.command.BackListCommand;
@@ -10,7 +10,6 @@ public class CommandModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
         multibind(CommandClass.class)
                 .named("command-list")
                 .asSet()

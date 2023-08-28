@@ -1,18 +1,16 @@
-package me.bryang.backloc.storage;
+package me.bryang.backloc.storage.adapter;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import me.bryang.backloc.storage.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import javax.xml.crypto.dom.DOMCryptoContext;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.channels.FileLock;
 
-public class GsonTypeAdapter extends TypeAdapter<Location> {
-
+public class LocationTypeAdapter extends TypeAdapter<Location> {
 
     @Override
     public void write(JsonWriter jsonWriter, Location value) throws IOException {
@@ -31,23 +29,52 @@ public class GsonTypeAdapter extends TypeAdapter<Location> {
         jsonWriter
                 .name("z")
                 .value(value.getZ());
+        jsonWriter
+                .name("pitch")
+                .value(value.getPitch());
+        jsonWriter
+                .name("yaw")
+                .value(value.getYaw());
 
         jsonWriter.endObject();
     }
 
     @Override
-    public Location read(JsonReader in) throws IOException {
+    public Location read(JsonReader jsonReader) throws IOException {
 
-        in.beginObject();
+        jsonReader.beginObject();
 
-        String world = in.nextString();
+        String world = "";
 
-        double x = in.nextDouble();
-        double y = in.nextDouble();
-        double z = in.nextDouble();
+        double x = 0;
+        double y = 0;
+        double z = 0;
 
-        return new Location(Bukkit.getWorld(world), x, y, z);
+        float pitch = 0;
+        float yaw = 0;
 
+        while (jsonReader.hasNext()) {
+
+            String key = jsonReader.nextName();
+
+            switch (key){
+                case "world" ->
+                    world = jsonReader.nextString();
+                case "x" ->
+                    x = jsonReader.nextDouble();
+                case "y" ->
+                    y = jsonReader.nextDouble();
+                case "z" ->
+                    z = jsonReader.nextDouble();
+                case "pitch" ->
+                    pitch = (float) jsonReader.nextDouble();
+                case "yaw" ->
+                    yaw = (float) jsonReader.nextDouble();
+            }
+        }
+
+        jsonReader.endObject();
+        return new Location(Bukkit.getWorld(world), x, y, z, pitch, yaw);
     }
 
 }

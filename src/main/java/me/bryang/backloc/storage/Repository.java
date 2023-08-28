@@ -1,6 +1,16 @@
 package me.bryang.backloc.storage;
 
-public class RepositoryHandler<T>{
+import java.util.Collection;
 
-    void
+public interface Repository<T>{
+
+    void create(T t);
+
+    T findById(String id);
+
+    boolean exists(String id);
+
+    void deleteById(String id);
+
+    Collection<T> findAll();
 }

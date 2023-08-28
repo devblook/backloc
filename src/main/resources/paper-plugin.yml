@@ -1,4 +1,5 @@
 name: BackLoc
-version: '${version}'
+version: '1.0'
 main: me.bryang.backloc.BackLoc
+loader: me.bryang.backloc.LocalPluginLoader
 api-version: '1.20'

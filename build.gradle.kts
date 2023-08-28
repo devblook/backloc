@@ -1,47 +1,45 @@
+import org.gradle.configurationcache.extensions.capitalized
+
+
 plugins {
-    id 'java'
+    id("java-library")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+
 }
 
-group = 'me.bryang'
-version = '1.0'
-
-repositories {
-    mavenCentral()
-    maven {
-        name = "papermc-repo"
-        url = "https://repo.papermc.io/repository/maven-public/"
-    }
-    maven {
-        name = "sonatype"
-        url = "https://oss.sonatype.org/content/groups/public/"
-    }
+repositories{
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.unnamed.team/repository/unnamed-public/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
-    compileOnly "io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT"
+
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly("team.unnamed:inject:1.0.1")
+    compileOnly("org.spongepowered:configurate-hocon:4.0.0")
+    compileOnly("me.fixeddev:commandflow-bukkit:0.6.0")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }
 
-def targetJavaVersion = 17
+tasks {
+    shadowJar {
+        archiveBaseName.set(rootProject.name.capitalized())
+    }
+
+    build {
+        dependsOn(shadowJar)
+    }
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
-}
-
-tasks.withType(JavaCompile).configureEach {
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
-    }
-}
-
-processResources {
-    def props = [version: version]
-    inputs.properties props
-    filteringCharset 'UTF-8'
-    filesMatching('paper-plugin.yml') {
-        expand props
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
