@@ -1,4 +1,4 @@
-package me.bryang.backloc.service.command;
+package me.bryang.backloc.command;
 
 import me.bryang.backloc.configuration.ConfigurationContainer;
 import me.bryang.backloc.configuration.type.MessageSection;
@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class LocalTranslationProvider implements TranslationProvider {
+public class  LocalTranslationProvider implements TranslationProvider {
 
     @Inject
     private ConfigurationContainer<MessageSection> messagesFile;

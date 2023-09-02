@@ -1,6 +1,7 @@
-package me.bryang.backloc.service.command;
+package me.bryang.backloc.service;
 
-import me.bryang.backloc.service.Service;
+import me.bryang.backloc.command.LocalTranslationProvider;
+import me.bryang.backloc.command.LocalTranslator;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilder;
 import me.fixeddev.commandflow.annotated.AnnotatedCommandTreeBuilderImpl;
 import me.fixeddev.commandflow.annotated.CommandClass;

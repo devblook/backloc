@@ -1,4 +1,4 @@
-package me.bryang.backloc.service.command;
+package me.bryang.backloc.command;
 
 import me.fixeddev.commandflow.Namespace;
 import me.fixeddev.commandflow.translator.TranslationProvider;
