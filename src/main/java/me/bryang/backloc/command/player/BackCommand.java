@@ -1,4 +1,4 @@
-package me.bryang.backloc.command;
+package me.bryang.backloc.command.player;
 
 import me.bryang.backloc.configuration.ConfigurationContainer;
 import me.bryang.backloc.configuration.type.MessageSection;
@@ -48,13 +48,13 @@ public class BackCommand implements CommandClass {
             location = locations.get(locations.size() -1);
         } else {
 
-            try{
-                location = locations.get(id);
-            }catch (IndexOutOfBoundsException exception) {
+            if (id == locations.size() - 1){
                 messageManager.sendMessage(sender, messageSection.error.unknownId,
                         Placeholder.unparsed("id", String.valueOf(id)));
                 return;
             }
+
+            location = locations.get(id);
         }
 
         sender.teleport(location);

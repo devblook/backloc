@@ -1,4 +1,4 @@
-package me.bryang.backloc.command;
+package me.bryang.backloc.command.player;
 
 import me.bryang.backloc.configuration.ConfigurationContainer;
 import me.bryang.backloc.configuration.type.MessageSection;
@@ -49,9 +49,9 @@ public class BackListCommand implements CommandClass {
                     Location location = locations.get(id);
 
                     String locationPath = backCoordFormat
-                            .replace("<x>", String.valueOf(Math.round(location.getX())))
-                            .replace("<y>", String.valueOf(Math.round(location.getY())))
-                            .replace("<z>", String.valueOf(Math.round(location.getZ())));
+                            .replace("<x>", String.valueOf(location.getX()))
+                            .replace("<y>", String.valueOf(location.getY()))
+                            .replace("<z>", String.valueOf(location.getZ()));
 
                     messageManager.sendMessage(sender, backLine,
                             Placeholder.unparsed("back_format", ""),
