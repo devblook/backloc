@@ -6,9 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import javax.xml.crypto.dom.DOMCryptoContext;
 import java.io.IOException;
-import java.nio.channels.FileLock;
 
 public class LocationTypeAdapter extends TypeAdapter<Location> {
 
