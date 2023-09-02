@@ -3,15 +3,17 @@ package me.bryang.backloc.listener;
 import me.bryang.backloc.storage.GsonFileStorage;
 import me.bryang.backloc.storage.Repository;
 import me.bryang.backloc.storage.user.User;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import team.unnamed.inject.InjectAll;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.Logger;
 
 @InjectAll
@@ -22,6 +24,9 @@ public class PlayerConnectListener implements Listener {
     private GsonFileStorage gsonFileStorage;
 
     private Logger logger;
+
+    @Named("async-thread")
+    private ExecutorService executorService;
 
     @EventHandler
     public void joinEvent(AsyncPlayerPreLoginEvent event){
@@ -40,13 +45,17 @@ public class PlayerConnectListener implements Listener {
     @EventHandler
     public void quitEvent(PlayerQuitEvent event){
 
-        String senderUniqueId = event.getPlayer().getUniqueId().toString();
+        Player sender = event.getPlayer();
 
-        CompletableFuture.runAsync(() -> gsonFileStorage.serializeAndSave(userRepository.findById(senderUniqueId)),
-                        Executors.newSingleThreadExecutor())
+        String senderName = sender.getName();
+        String senderUniqueId = sender.getUniqueId().toString();
+
+        CompletableFuture
+                .runAsync(() -> gsonFileStorage.serializeAndSave(userRepository.findById(senderUniqueId)),
+                        executorService)
                 .exceptionally(throwable -> {
 
-                    logger.info("There was a error to save " + event.getPlayer().getName() + " data.");
+                    logger.info("There was a error to save " + senderName + " data.");
                     logger.info("Message: " + throwable.getMessage());
                     return null;
                 });

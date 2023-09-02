@@ -1,4 +1,4 @@
-package me.bryang.backloc.command;
+package me.bryang.backloc.command.player;
 
 import me.bryang.backloc.configuration.ConfigurationContainer;
 import me.bryang.backloc.configuration.type.ConfigSection;
@@ -10,10 +10,11 @@ import me.fixeddev.commandflow.bukkit.annotation.Sender;
 import org.bukkit.entity.Player;
 import team.unnamed.inject.InjectAll;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 
 @InjectAll
 @Singleton
@@ -27,6 +28,9 @@ public class PluginCommand implements CommandClass {
 
     private MessageManager messageManager;
 
+    @Named("async-thread")
+    private ExecutorService executorService;
+
     @Command(names = {"", "help"})
     public void executeMainSubCommand(@Sender Player sender) {
         messageManager.sendMessage(sender,
@@ -39,15 +43,15 @@ public class PluginCommand implements CommandClass {
 
         CompletableFuture.runAsync(() -> {
 
-            try {
-                configFile.reload();
-                messagesFile.reload();
+                    try {
+                        configFile.reload();
+                        messagesFile.reload();
 
-            } catch (IOException exception) {
-                throw new RuntimeException(exception);
-            }
+                    } catch (IOException exception) {
+                        throw new RuntimeException(exception);
+                    }
 
-            }, Executors.newSingleThreadExecutor())
+                }, executorService)
                 .thenRun(() ->
                         messageManager.sendMessage(sender,
                                 "<gold>[BackLoc] <dark_grey>| <white>Plugin reloaded!"))

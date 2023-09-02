@@ -7,6 +7,8 @@ import team.unnamed.inject.Provides;
 
 import javax.inject.Singleton;
 import java.nio.file.Path;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 public class MainModule extends AbstractModule {
@@ -21,6 +23,7 @@ public class MainModule extends AbstractModule {
     public Logger logger(){
         return plugin.getLogger();
     }
+
     @Override
     protected void configure() {
 
@@ -31,8 +34,11 @@ public class MainModule extends AbstractModule {
                 .named("plugin-path")
                 .toInstance(plugin.getDataFolder().toPath());
 
-        install(
-                new StorageModule(),
+        bind(ExecutorService.class)
+                .named("async-thread")
+                .toInstance(Executors.newSingleThreadExecutor());
+
+        install(new StorageModule(),
                 new ConfigurationModule(),
                 new CommandModule(),
                 new ListenerModule(),
