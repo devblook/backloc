@@ -11,7 +11,7 @@ public class ListenerModule extends AbstractModule {
     protected void configure() {
         multibind(Listener.class)
                 .named("listener-list")
-                .asSet()
+                .asList()
                 .to(PlayerConnectListener.class)
                 .to(PlayerDeathListener.class);
     }

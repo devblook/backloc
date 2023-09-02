@@ -7,7 +7,7 @@ import org.bukkit.plugin.PluginManager;
 import team.unnamed.inject.InjectAll;
 
 import javax.inject.Named;
-import java.util.Set;
+import java.util.List;
 
 
 @InjectAll
@@ -16,8 +16,7 @@ public class ListenerService implements Service {
     private BackLoc plugin;
 
     @Named("listener-list")
-    private Set<Listener> listeners;
-
+    private List<Listener> listeners;
 
     @Override
     public void init() {
