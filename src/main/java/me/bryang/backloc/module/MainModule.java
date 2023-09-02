@@ -5,6 +5,7 @@ import me.bryang.backloc.module.submodules.*;
 import team.unnamed.inject.AbstractModule;
 import team.unnamed.inject.Provides;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
@@ -24,6 +25,11 @@ public class MainModule extends AbstractModule {
         return plugin.getLogger();
     }
 
+    @Provides @Singleton @Named("async-thread")
+    public ExecutorService asyncThreadExecutor(){
+        return Executors.newSingleThreadExecutor();
+    }
+
     @Override
     protected void configure() {
 
@@ -33,10 +39,6 @@ public class MainModule extends AbstractModule {
         bind(Path.class)
                 .named("plugin-path")
                 .toInstance(plugin.getDataFolder().toPath());
-
-        bind(ExecutorService.class)
-                .named("async-thread")
-                .toInstance(Executors.newSingleThreadExecutor());
 
         install(new StorageModule(),
                 new ConfigurationModule(),
