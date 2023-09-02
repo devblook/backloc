@@ -12,13 +12,13 @@ import me.fixeddev.commandflow.bukkit.factory.BukkitModule;
 import team.unnamed.inject.InjectAll;
 
 import javax.inject.Named;
-import java.util.Set;
+import java.util.List;
 
 @InjectAll
 public class CommandService implements Service {
 
     @Named("command-list")
-    private Set<CommandClass> commandClasses;
+    private List<CommandClass> commandClasses;
 
     private LocalTranslator translator;
     private LocalTranslationProvider localTranslationProvider;
