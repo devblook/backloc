@@ -1,7 +1,7 @@
 package me.bryang.backloc.listener;
 
-import me.bryang.backloc.storage.GsonFileStorage;
 import me.bryang.backloc.storage.Repository;
+import me.bryang.backloc.storage.gson.GsonFileStorage;
 import me.bryang.backloc.storage.user.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,11 +34,13 @@ public class PlayerConnectListener implements Listener {
         String senderUniqueId = event.getUniqueId().toString();
 
         if (!userRepository.exists(senderUniqueId)){
-            if (gsonFileStorage.exists(senderUniqueId)){
-                gsonFileStorage.deserializeAndPut(senderUniqueId);
-            }else{
-                userRepository.create(new User(senderUniqueId));
-            }
+
+            User user = gsonFileStorage.exists(senderUniqueId)
+                    ? gsonFileStorage.deserialize(senderUniqueId)
+                    : new User(senderUniqueId);
+
+            userRepository.create(user);
+
         }
     }
 
@@ -51,7 +53,7 @@ public class PlayerConnectListener implements Listener {
         String senderUniqueId = sender.getUniqueId().toString();
 
         CompletableFuture
-                .runAsync(() -> gsonFileStorage.serializeAndSave(userRepository.findById(senderUniqueId)),
+                .runAsync(() -> gsonFileStorage.save(userRepository.findById(senderUniqueId)),
                         executorService)
                 .exceptionally(throwable -> {
 
