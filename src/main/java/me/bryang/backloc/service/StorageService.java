@@ -1,6 +1,6 @@
 package me.bryang.backloc.service;
 
-import me.bryang.backloc.storage.GsonFileStorage;
+import me.bryang.backloc.storage.gson.GsonFileStorage;
 
 import javax.inject.Inject;
 
