@@ -13,12 +13,12 @@ public class LocationTypeAdapter implements LocalTypeAdapter<Location> {
     @Override
     public JsonObject serialize(JsonWriter jsonWriter, Location location) {
         return jsonWriter
-                .object("world", location.getWorld().getName())
-                .object("x", location.getX())
-                .object("y", location.getY())
-                .object("z", location.getZ())
-                .object("pitch", location.getPitch())
-                .object("yaw", location.getYaw())
+                .writePrimitive("world", location.getWorld().getName())
+                .writePrimitive("x", location.getBlockX())
+                .writePrimitive("y", location.getBlockY())
+                .writePrimitive("z", location.getBlockZ())
+                .writePrimitive("pitch", location.getPitch())
+                .writePrimitive("yaw", location.getYaw())
                 .build();
     }
 
@@ -26,9 +26,9 @@ public class LocationTypeAdapter implements LocalTypeAdapter<Location> {
     public Location deserialize(JsonReader jsonReader, JsonObject jsonObject) {
 
         String world = jsonReader.getString("world");
-        double x = jsonReader.getDouble("x");
-        double y = jsonReader.getDouble("y");
-        double z = jsonReader.getDouble("z");
+        double x = jsonReader.getInteger("x");
+        double y = jsonReader.getInteger("y");
+        double z = jsonReader.getInteger("z");
         float pitch = jsonReader.getFloat("pitch");
         float yaw = jsonReader.getFloat("yaw");
 
