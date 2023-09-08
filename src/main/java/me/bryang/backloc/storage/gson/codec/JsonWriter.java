@@ -14,24 +14,22 @@ public class JsonWriter {
         this.jsonObject = new JsonObject();
     }
 
-    public JsonWriter object(String key, String value) {
+    public JsonWriter writePrimitive(String key, String value) {
         jsonObject.addProperty(key, value);
         return this;
     }
 
-
-    public JsonWriter object(String key, Number value) {
+    public JsonWriter writePrimitive(String key, Number value) {
         jsonObject.addProperty(key, value);
         return this;
     }
 
-
-    public JsonWriter object(String key, boolean value) {
+    public JsonWriter writePrimitive(String key, Boolean value) {
         jsonObject.addProperty(key, value);
         return this;
     }
 
-    public <T> JsonWriter list(String key, List<T> list, LocalTypeAdapter<T> localTypeAdapter){
+    public <T> JsonWriter writeList(String key, List<T> list, LocalTypeAdapter<T> localTypeAdapter){
 
         JsonArray jsonArray = new JsonArray();
 

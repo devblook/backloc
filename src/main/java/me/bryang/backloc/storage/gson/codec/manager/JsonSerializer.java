@@ -7,6 +7,9 @@ import me.bryang.backloc.storage.gson.codec.JsonWriter;
 import me.bryang.backloc.storage.user.User;
 import org.bukkit.Location;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class JsonSerializer {
 
     private final LocalTypeAdapter<Location> locationTypeAdapter;
@@ -17,8 +20,8 @@ public class JsonSerializer {
 
     public JsonObject serialize(User user){
         return new JsonWriter()
-                .object("unique_id", user.uniqueId())
-                .list("locations", user.locations(), locationTypeAdapter)
+                .writePrimitive("unique_id", user.uniqueId())
+                .writeList("locations", user.locations(), locationTypeAdapter)
                 .build();
     }
 }
