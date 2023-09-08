@@ -37,8 +37,15 @@ public class BackListCommand implements CommandClass {
         User user = userRepository.findById(sender.getUniqueId().toString());
         List<Location> locations = user.locations();
 
-        List<String> backListFormat = pluginSection.backListFormat;
-        String backCoordFormat = pluginSection.backCoordFormat;
+        if (locations.isEmpty()){
+            messageManager.sendMessage(sender, messagesFile.get().error.noDeathPoints);
+            return;
+        }
+
+        List<String> backListFormat = pluginSection.backList.commandMessage;
+        String backCoordFormat = pluginSection.backList.backCoordsFormat;
+        String lastFormat = pluginSection.backList.lastIdFormat;
+
 
         backListFormat.forEach(backLine -> {
 
@@ -46,16 +53,25 @@ public class BackListCommand implements CommandClass {
 
                 for (int id = 0; id < locations.size(); id++) {
 
+                    String locationLine = backLine;
                     Location location = locations.get(id);
 
                     String locationPath = backCoordFormat
-                            .replace("<x>", String.valueOf(location.getX()))
-                            .replace("<y>", String.valueOf(location.getY()))
-                            .replace("<z>", String.valueOf(location.getZ()));
+                            .replace("<x>", String.valueOf(location.getBlockX()))
+                            .replace("<y>", String.valueOf(location.getBlockY()))
+                            .replace("<z>", String.valueOf(location.getBlockZ()));
 
-                    messageManager.sendMessage(sender, backLine,
+                    if (id == 0){
+                        locationLine = locationLine
+                                .replace("<last_id>", lastFormat);
+                    }else{
+                        locationLine = locationLine
+                                .replace("<last_id>", "");
+                    }
+
+                    messageManager.sendMessage(sender, locationLine,
                             Placeholder.unparsed("back_format", ""),
-                            Placeholder.unparsed("back_id", String.valueOf(id)),
+                            Placeholder.parsed("back_id", String.valueOf(id)),
                             Placeholder.unparsed("back_coords", locationPath));
                 }
                 return;
