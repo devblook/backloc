@@ -29,7 +29,6 @@ public class ConfigurationContainer<T> {
                         config.header("""
                             %s
                             """.replace("%s", fileName + ".conf")))
-
                 .build();
 
         try {
@@ -58,8 +57,6 @@ public class ConfigurationContainer<T> {
 
         internClass.set(newClass);
         loader.save(node);
-
-
 
     }
 

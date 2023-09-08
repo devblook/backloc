@@ -18,7 +18,6 @@ public class LocalTranslator implements Translator {
     private final MiniMessage miniMessage = MiniMessage.miniMessage();
     private TranslationProvider translationProvider;
 
-
     @Override
     public Component translate(Component component, Namespace namespace) {
 

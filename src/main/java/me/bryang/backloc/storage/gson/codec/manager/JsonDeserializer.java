@@ -8,6 +8,9 @@ import me.bryang.backloc.storage.user.User;
 import me.bryang.backloc.storage.user.UserBuilder;
 import org.bukkit.Location;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class JsonDeserializer {
 
     private final LocalTypeAdapter<Location> locationTypeAdapter;
@@ -15,7 +18,6 @@ public class JsonDeserializer {
     public JsonDeserializer(){
         this.locationTypeAdapter = new LocationTypeAdapter();
     }
-
 
     public User deserialize(JsonObject jsonObject){
 

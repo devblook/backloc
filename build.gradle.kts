@@ -4,7 +4,6 @@ import org.gradle.configurationcache.extensions.capitalized
 plugins {
     id("java-library")
     id("com.github.johnrengelman.shadow") version "7.1.2"
-
 }
 
 repositories{
@@ -14,7 +13,6 @@ repositories{
 }
 
 dependencies {
-
     compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
     compileOnly("team.unnamed:inject:1.0.1")
     compileOnly("org.spongepowered:configurate-hocon:4.0.0")

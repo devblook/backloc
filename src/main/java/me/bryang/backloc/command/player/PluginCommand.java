@@ -33,6 +33,7 @@ public class PluginCommand implements CommandClass {
 
     @Command(names = {"", "help"})
     public void executeMainSubCommand(@Sender Player sender) {
+
         messageManager.sendMessage(sender,
                 "<gold>[BackLoc] <dark_grey>| <white>Help command.",
                 "<dark_grey>- <white>/clab reload <dark_grey>: <white>Reload the plugin.",
@@ -41,17 +42,16 @@ public class PluginCommand implements CommandClass {
     @Command(names = "reload", permission = "backloc.admin")
     public void executeReloadSubCommand(@Sender Player sender) {
 
-        CompletableFuture.runAsync(() -> {
 
+        CompletableFuture
+                .runAsync(() -> {
                     try {
                         configFile.reload();
                         messagesFile.reload();
-
                     } catch (IOException exception) {
                         throw new RuntimeException(exception);
                     }
-
-                }, executorService)
+                    }, executorService)
                 .thenRun(() ->
                         messageManager.sendMessage(sender,
                                 "<gold>[BackLoc] <dark_grey>| <white>Plugin reloaded!"))

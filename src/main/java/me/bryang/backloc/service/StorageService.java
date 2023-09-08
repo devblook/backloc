@@ -9,7 +9,6 @@ public class StorageService implements Service{
     @Inject
     private GsonFileStorage gsonFileStorage;
 
-
     @Override
     public void init() {
         gsonFileStorage.init();
