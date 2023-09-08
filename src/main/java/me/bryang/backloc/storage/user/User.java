@@ -2,19 +2,18 @@ package me.bryang.backloc.storage.user;
 
 import org.bukkit.Location;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public class User {
 
     private final String uniqueId;
-    private List<Location> locations = new ArrayList<>();
+    private LinkedList<Location> locations = new LinkedList<>();
 
     public User(String uniqueId){
         this.uniqueId = uniqueId;
     }
 
-    protected User(String uniqueId, List<Location> locations){
+    protected User(String uniqueId, LinkedList<Location> locations){
         this.uniqueId = uniqueId;
         this.locations = locations;
     }
@@ -23,7 +22,7 @@ public class User {
         return uniqueId;
     }
 
-    public List<Location> locations() {
+    public LinkedList<Location> locations() {
         return locations;
     }
 

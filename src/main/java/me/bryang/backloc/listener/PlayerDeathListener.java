@@ -29,14 +29,13 @@ public class PlayerDeathListener implements Listener {
     public void deathEvent(PlayerDeathEvent event){
 
         Player sender = event.getPlayer();
-
         User user = userRepository.findById(sender.getUniqueId().toString());
 
         if (user.locations().size() >= configFile.get().plugin.maxBacks) {
-            return;
+            user.locations().removeLast();
         }
 
-        user.locations().add(sender.getLocation());
+        user.locations().addFirst(sender.getLocation());
         messageManager.sendMessage(sender, messagesFile.get().plugin.deathMessage);
     }
 }

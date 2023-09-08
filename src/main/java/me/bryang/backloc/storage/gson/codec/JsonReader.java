@@ -3,8 +3,7 @@ package me.bryang.backloc.storage.gson.codec;
 import com.google.gson.JsonObject;
 import me.bryang.backloc.storage.gson.adapter.LocalTypeAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public class JsonReader {
 
@@ -47,9 +46,9 @@ public class JsonReader {
                 .getAsBoolean();
     }
 
-    public <T> List<T> getList(String key, LocalTypeAdapter<T> localTypeAdapter){
+    public <T> LinkedList<T> getList(String key, LocalTypeAdapter<T> localTypeAdapter){
 
-        List<T> list = new ArrayList<>();
+        LinkedList<T> list = new LinkedList<>();
 
         jsonObject
                 .getAsJsonArray(key)
