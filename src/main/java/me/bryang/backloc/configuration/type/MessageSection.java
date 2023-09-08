@@ -17,7 +17,7 @@ public class MessageSection {
     public static class Error {
 
         @Comment("When a admin try to use the command in console.")
-        public String noConsole = "Err - You can't use the command in console.";
+        public String noConsole = "Error - You can't use this command in console.";
 
         @Comment("When a player put a admin argument")
         public String noPermission = "<red>[Error] <dark_grey>| <white>You don't have permission to do this.";
@@ -25,11 +25,14 @@ public class MessageSection {
         @Comment("When a player doesn't put a number")
         public String unknownNumber = "<red>[Error] <dark_grey>| <white>Unknown number <red>[<argument>]";
 
-        @Comment("When the id doesn't exists")
+        @Comment("When a player put a negative number.")
+        public String negativeNumber = "<red>[Error] <dark_grey>| <white>You put a negative number <red>[<argument>]";
+
+        @Comment("When the id of the death points list doesn't exists")
         public String unknownId = "<red>[Error] <dark_grey>| <white>Unknown id. Check /backlist. Id: <id>";
 
-        @Comment("When a player hasn't died.")
-        public String noBacks = "<red>[Error] <dark_grey>| <white>You don't have backs";
+        @Comment("When a player hasn't died, so it doesn't have death points.")
+        public String noDeathPoints = "<red>[Error] <dark_grey>| <white>You don't have death points.";
 
     }
 
