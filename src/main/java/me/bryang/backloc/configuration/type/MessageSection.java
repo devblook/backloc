@@ -36,19 +36,31 @@ public class MessageSection {
     @ConfigSerializable
     public static class Plugin{
 
-        @Comment("""
-        Message that will show to the player when uses the backup command
-        Variables:
-        - <back_format> If the line has this variable, will be the message that will iterated from all back list.
-        - <back_id> Id from the back.
-        - <back_coords> Coords from the back.
-        """)
-        public List<String> backListFormat = Arrays.asList(
-                "<gold>[Back] <dark_grey>| <grey>List of backs <gold>[<back_length>]",
-                "<back_format><dark_grey>- <white><back_id> <dark_grey>- <white><back_coords> <grey>: <green><hover:show_text:'Click here!'><click:run_command:'/back <back_id>'>[Teleport]</click></hover>");
 
-        @Comment("Format in <back_coords> variable in backListFormat message path.")
-        public String backCoordFormat = "<x> <y> <z>";
+        @Comment("""
+            Message that will show to the player when uses the backup command
+            Variables:
+            - <back_format> If the line has this variable, will be the message that will iterated from all back list.
+            - <back_id> Id from the death point.
+            - <last_id> This variable will only appear in the last death point.
+            - <back_coords> Coords from the death point.
+             """)
+        public BackList backList = new BackList();
+
+        @ConfigSerializable
+        public static class BackList{
+
+            public List<String> commandMessage = Arrays.asList(
+                    "<gold>[Back] <dark_grey>| <white>List of death points <gold>[<back_length>]",
+                    "<back_format><dark_grey>- <white><back_id> <dark_grey>- <white><back_coords> <last_id><grey>: <green><hover:show_text:'Click here!'><click:run_command:'/back <back_id>'>[Teleport]</click></hover>");
+
+            @Comment("Format in <back_coords> variable in backListFormat message path.")
+            public String backCoordsFormat = "<x> <y> <z>";
+
+            @Comment("Format in <last_id>")
+            public String lastIdFormat = "<grey>(last) ";
+        }
+
 
         @Comment("When a player use a backup")
         public String teleportMessage = "<gold>[Back] <dark_grey>| <white>Entering to backup";
