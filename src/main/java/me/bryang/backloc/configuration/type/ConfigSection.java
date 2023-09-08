@@ -11,8 +11,8 @@ public class ConfigSection {
     @ConfigSerializable
     public static class Plugin{
 
-        @Comment("Max back that can have every user")
-        public int maxBacks = 10;
+        @Comment("Set the max death points that can have every user.")
+        public int maxBacks = 5;
 
     }
 }
