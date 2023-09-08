@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 import team.unnamed.inject.InjectAll;
 
 import javax.inject.Singleton;
-import java.util.List;
+import java.util.LinkedList;
 
 @InjectAll
 @Singleton
@@ -30,34 +30,36 @@ public class BackCommand implements CommandClass {
     @Command(
             names = "back",
             desc = "Back command.")
-    public void execute(@Sender Player sender, @OptArg("-1") int id){
+    public void execute(@Sender Player sender, @OptArg("0") int id){
 
         MessageSection messageSection = messageFile.get();
 
         User user = userRepository.findById(sender.getUniqueId().toString());
-        List<Location> locations = user.locations();
+        LinkedList<Location> locations = user.locations();
 
         if (locations.isEmpty()){
-            messageManager.sendMessage(sender, messageSection.error.noBacks);
+            messageManager.sendMessage(sender, messageSection.error.noDeathPoints);
+            return;
+        }
+
+        if (id < 0){
+            messageManager.sendMessage(sender, messageSection.error.negativeNumber,
+                    Placeholder.unparsed("argument", String.valueOf(id)));
             return;
         }
 
         Location location;
 
-        if (id == -1){
-            location = locations.get(locations.size() -1);
-        } else {
+         if (id >= locations.size()){
+             messageManager.sendMessage(sender, messageSection.error.unknownId,
+                     Placeholder.unparsed("id", String.valueOf(id)));
+             return;
+         }
 
-            if (id == locations.size() - 1){
-                messageManager.sendMessage(sender, messageSection.error.unknownId,
-                        Placeholder.unparsed("id", String.valueOf(id)));
-                return;
-            }
+         location = locations.get(id);
 
-            location = locations.get(id);
-        }
 
-        sender.teleport(location);
+        sender.teleportAsync(location);
         messageManager.sendMessage(sender, messageFile.get().plugin.teleportMessage);
     }
 
