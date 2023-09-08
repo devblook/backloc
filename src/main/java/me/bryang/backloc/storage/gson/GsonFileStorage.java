@@ -1,7 +1,5 @@
 package me.bryang.backloc.storage.gson;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.stream.JsonReader;
@@ -10,43 +8,35 @@ import me.bryang.backloc.storage.Repository;
 import me.bryang.backloc.storage.gson.codec.manager.JsonDeserializer;
 import me.bryang.backloc.storage.gson.codec.manager.JsonSerializer;
 import me.bryang.backloc.storage.user.User;
+import team.unnamed.inject.InjectAll;
 import team.unnamed.inject.InjectIgnore;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+@InjectAll
 @Singleton
 public class GsonFileStorage {
 
-    @Inject
     private Repository<User> userRepository;
 
-    @Inject
     @Named("plugin-path")
     private Path path;
 
-    @Inject
     private Logger logger;
 
+    private JsonSerializer jsonSerializer;
+    private JsonDeserializer jsonDeserializer;
+
+    @InjectIgnore
     private Path usersFolder;
 
-    private final JsonSerializer jsonSerializer;
-    private final JsonDeserializer jsonDeserializer;
-
-
-    public GsonFileStorage(){
-        this.jsonSerializer = new JsonSerializer();
-        this.jsonDeserializer = new JsonDeserializer();
-    }
 
     public void init(){
 
@@ -71,7 +61,7 @@ public class GsonFileStorage {
 
         Path userPath = usersFolder.resolve(id + ".json");
 
-        try(JsonReader jsonReader = new JsonReader(Files.newBufferedReader(userPath))){
+        try (JsonReader jsonReader = new JsonReader(Files.newBufferedReader(userPath))){
 
             JsonObject jsonObject = TypeAdapters.JSON_ELEMENT.read(jsonReader).getAsJsonObject();
             return jsonDeserializer.deserialize(jsonObject);
@@ -84,12 +74,11 @@ public class GsonFileStorage {
     public void save(User user){
 
         Path userPath = usersFolder.resolve(user.uniqueId() + ".json");
-
         JsonObject jsonObject = jsonSerializer.serialize(user);
 
-        try(JsonWriter jsonWriter = new JsonWriter(Files.newBufferedWriter(userPath))){
+        try (JsonWriter jsonWriter = new JsonWriter(Files.newBufferedWriter(userPath))){
 
-            jsonWriter.setIndent(" ");
+            jsonWriter.setIndent("  ");
             jsonWriter.setSerializeNulls(false);
 
             TypeAdapters.JSON_ELEMENT.write(jsonWriter, jsonObject);
