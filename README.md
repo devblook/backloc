@@ -1,4 +1,11 @@
-[<img src = "https://img.shields.io/badge/Support-grey?logo=discord&style=for-the-badge">](https://discord.gg/HzTJ2Rtsw7)
+<img src= "https://img.shields.io/github/license/devblook/backloc?style=for-the-badge"> <img src= "https://img.shields.io/github/v/release/devblook/backloc?style=for-the-badge"> <img src = "https://img.shields.io/github/downloads/devblook/backloc/total?style=for-the-badge">  [<img src = "https://img.shields.io/badge/Support-grey?logo=discord&style=for-the-badge">](https://discord.gg/HzTJ2Rtsw7)
+
+<p align="center">
+ <picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://i.ibb.co/b2c3Lrg/plugin-background-black.png"> 
+  <img src="https://i.ibb.co/2kY4cht/plugin-background.png" width="550" height="320" />
+ </picture>
+</p>
 
 ## Introduction
 
