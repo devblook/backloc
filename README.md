@@ -9,7 +9,7 @@
 
 ## Introduction
 
-BackLoc is a plugin that you can save more that one back.
+A plugin with you can manage your death points.
 
 ### Requirements:
 
