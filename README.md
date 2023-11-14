@@ -9,7 +9,7 @@
 
 ## Introduction
 
-BackLoc is a plugin that you can save more that one back.
+A plugin with you can manage your death points.
 
 ### Requirements:
 
@@ -26,7 +26,8 @@ You can check the last version of the plugin in the [releases](https://github.co
 With the plugin you can:
 
 - Use [MiniMessage](https://docs.advntr.dev/minimessage/index.html) in message paths.
-- Check old messages
+- Change a max death points for every user.
+- Manage your death points.
 
 ## To do:
 
