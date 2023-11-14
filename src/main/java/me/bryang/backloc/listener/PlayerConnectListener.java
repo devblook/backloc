@@ -1,7 +1,8 @@
 package me.bryang.backloc.listener;
 
 import me.bryang.backloc.storage.Repository;
-import me.bryang.backloc.storage.gson.GsonFileStorage;
+import me.bryang.backloc.storage.Storage;
+import me.bryang.backloc.storage.gson.UserStorage;
 import me.bryang.backloc.storage.user.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 public class PlayerConnectListener implements Listener {
 
     private Repository<User> userRepository;
-    private GsonFileStorage gsonFileStorage;
+    private Storage<User> userStorage;
 
     private Logger logger;
 
@@ -33,15 +34,11 @@ public class PlayerConnectListener implements Listener {
 
         String senderUniqueId = event.getUniqueId().toString();
 
-        if (!userRepository.exists(senderUniqueId)){
+        User user = userStorage.exists(senderUniqueId)
+                ? userStorage.serialize(senderUniqueId)
+                : new User(senderUniqueId);
 
-            User user = gsonFileStorage.exists(senderUniqueId)
-                    ? gsonFileStorage.deserialize(senderUniqueId)
-                    : new User(senderUniqueId);
-
-            userRepository.create(user);
-
-        }
+        userRepository.create(user);
     }
 
     @EventHandler
@@ -53,7 +50,10 @@ public class PlayerConnectListener implements Listener {
         String senderUniqueId = sender.getUniqueId().toString();
 
         CompletableFuture
-                .runAsync(() -> gsonFileStorage.save(userRepository.findById(senderUniqueId)),
+                .runAsync(() -> {
+                    userStorage.save(userRepository.findById(senderUniqueId));
+                    userRepository.deleteById(senderUniqueId);
+                        },
                         executorService)
                 .exceptionally(throwable -> {
 
