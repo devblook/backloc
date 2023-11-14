@@ -23,6 +23,8 @@ public class CommandService implements Service {
     private LocalTranslator translator;
     private LocalTranslationProvider localTranslationProvider;
 
+
+
     @Override
     public void init() {
 
@@ -41,8 +43,4 @@ public class CommandService implements Service {
                 commandClass -> bukkitCommandManager.registerCommands(commandBuilder.fromClass(commandClass)));
     }
 
-    @Override
-    public void stop() {
-
-    }
 }

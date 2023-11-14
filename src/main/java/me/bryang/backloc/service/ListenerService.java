@@ -1,6 +1,6 @@
 package me.bryang.backloc.service;
 
-import me.bryang.backloc.BackLoc;
+import me.bryang.backloc.BackLocPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -13,7 +13,7 @@ import java.util.List;
 @InjectAll
 public class ListenerService implements Service {
 
-    private BackLoc plugin;
+    private BackLocPlugin plugin;
 
     @Named("listener-list")
     private List<Listener> listeners;
@@ -25,8 +25,4 @@ public class ListenerService implements Service {
         listeners.forEach(listener -> pluginManager.registerEvents(listener, plugin));
     }
 
-    @Override
-    public void stop() {
-
-    }
 }
